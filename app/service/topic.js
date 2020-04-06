@@ -46,19 +46,5 @@ class TopicService extends Service {
             author,
         };
     }
-
-    async showCommentsByTopicId(id) {
-        const comments = await this.ctx.model.Comment.find({ topic_id: id, deleted: false }, "", { sort: '-top -create_at', }).exec();
-        return comments
-    }
-
-    async makeComment(id, body) {
-        const author = await this.service.user.getCurrentUser();
-        let comment = this.ctx.model.Comment()
-        comment.author_id = author._id;
-        comment.content = body.content;
-        comment.topic_id = id;
-        return comment.save();
-    }
 }
 module.exports = TopicService;

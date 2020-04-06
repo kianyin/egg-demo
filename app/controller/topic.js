@@ -49,29 +49,6 @@ class TopicController extends Controller {
             ...topic_detail
         }
     }
-
-    async commentList() {
-        const { ctx } = this;
-        const { id } = ctx.params;
-        const comments = await ctx.service.topic.showCommentsByTopicId(id)
-
-        ctx.body = {
-            status: 'ok',
-            data_list: comments
-        }
-    }
-
-    async postComment() {
-        const { ctx } = this;
-        const { id } = ctx.params;
-        const { body } = ctx.request;
-        const result = await ctx.service.topic.makeComment(id, body)
-        if (result) {
-            ctx.body = {
-                status: 'ok'
-            }
-        }
-    }
 }
 
 

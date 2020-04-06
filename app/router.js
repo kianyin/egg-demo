@@ -15,15 +15,13 @@ module.exports = app => {
     // 文章详情 Done
     router.get('/topics/:id', jwt, controller.topic.detail);
     // 评论列表 Done 
-    router.get('/topics/:id/comments', jwt, controller.topic.commentList);
-    // 评论点赞
-    router.post('/topics/:id/comments/like', jwt, controller.home.index);
+    router.get('/topics/:id/comments', jwt, controller.comment.commentList);
+    // 评论点赞 Done
+    router.post('/topics/:id/comments/like', jwt, controller.comment.like);
     // 发表评论 Done
-    router.post('/topics/:id/comments', jwt, controller.topic.postComment);
-    // 评论回复
-    router.post('/comments/:id/reply', jwt, controller.home.index);
-    // 消息列表
-    router.post('/notices', jwt, controller.home.index);
+    router.post('/topics/:id/comments', jwt, controller.comment.postComment);
+    // 评论回复 Done
+    router.post('/comments/:id/reply', jwt, controller.comment.reply);
     // 添加文章 Done
     router.post('/topics', jwt, controller.topic.addTopic);
     // 修改文章
