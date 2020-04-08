@@ -3,10 +3,10 @@
 const Controller = require('egg').Controller;
 
 class CommentController extends Controller {
-    async commentList() {
+    async getList() {
         const { ctx } = this;
         const { id } = ctx.params;
-        const comments = await ctx.service.comment.showCommentsByTopicId(id)
+        const comments = await ctx.service.comment.getById(id)
 
         ctx.body = {
             status: 'ok',
@@ -14,11 +14,11 @@ class CommentController extends Controller {
         }
     }
 
-    async postComment() {
+    async create() {
         const { ctx } = this;
         const { id } = ctx.params;
         const { body } = ctx.request;
-        const result = await ctx.service.comment.makeComment(id, body)
+        const result = await ctx.service.comment.create(id, body)
         if (result) {
             ctx.body = {
                 status: 'ok'
@@ -37,7 +37,7 @@ class CommentController extends Controller {
                 msg: 'you do not like yourself'
             }
         }
-        const result = await ctx.service.comment.likeComment();
+        const result = await ctx.service.comment.like();
         if (result) {
             ctx.body = {
                 status: 'ok'
@@ -45,13 +45,10 @@ class CommentController extends Controller {
         }
     }
 
-    async reply() {
+    async delete() {
         const { ctx } = this;
         const { id } = ctx.params;
-        const { body } = ctx.request;
-        const { content } = body
-        const user = await ctx.service.user.getCurrentUser();
-        const result = await ctx.service.comment.reply(id, user._id, content);
+        const result = await ctx.service.comment.delete(id);
         if (result) {
             ctx.body = {
                 status: 'ok'

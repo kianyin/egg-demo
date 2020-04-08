@@ -3,7 +3,7 @@
 const Service = require('egg').Service;
 
 class TopicService extends Service {
-    async queryTopic(query = {}, querySelector = {}) {
+    async query(query = {}, querySelector = {}) {
         const { ctx } = this
         const total = await ctx.model.Topic.find({ ...query, deleted: false }).count();
         const data = await ctx.model.Topic.find({ ...query, deleted: false }, '', querySelector);
@@ -20,7 +20,7 @@ class TopicService extends Service {
         return { total, data_list }
     }
 
-    async addTopic(body) {
+    async create(body) {
         const topic = new this.ctx.model.Topic();
         topic.title = body.title
         topic.content = body.content
@@ -30,7 +30,7 @@ class TopicService extends Service {
         return true
     }
 
-    async getTopicById(id) {
+    async getById(id) {
         const topic = await this.ctx.model.Topic.findOne({ _id: id, deleted: false }).exec();
         if (!topic) {
             return {
@@ -45,6 +45,23 @@ class TopicService extends Service {
             topic,
             author,
         };
+    }
+
+    async update(id, body) {
+        const { title, content } = body
+        const topic = await this.ctx.model.Topic.findOne({ _id: id, deleted: false }).exec();
+        topic.title = title
+        topic.content = content
+        topic.update_at = Date.now
+        topic.save()
+
+        return true
+    }
+    async delete(id) {
+        let topic = await this.ctx.model.Topic.findOne({ _id: id, deleted: false });
+        topic.deleted = true;
+        topic.save();
+        return;
     }
 }
 module.exports = TopicService;

@@ -3,7 +3,7 @@
 const Service = require('egg').Service;
 
 class CommentService extends Service {
-    async showCommentsByTopicId(id) {
+    async getById(id) {
         const comments = await this.ctx.model.Comment.find({ topic_id: id, deleted: false }, "", { sort: '-top -create_at', }).exec();
         for (let i = 0; i < comments.length; i++) {
             comments[i].reply = this.ctx.model.Reply.find({ comment_id: comments[i]._id, deleted: false }, "", { sort: '-top -create_at', }).exec();
@@ -11,7 +11,7 @@ class CommentService extends Service {
         return comments
     }
 
-    async makeComment(id, body) {
+    async create(id, body) {
         const author = await this.service.user.getCurrentUser();
         let comment = this.ctx.model.Comment()
         comment.author_id = author._id;
@@ -20,7 +20,7 @@ class CommentService extends Service {
         return comment.save();
     }
 
-    async likeComment(author_id, comment_id) {
+    async like(author_id, comment_id) {
         let comment = await this.ctx.model.Comment.findOne({ _id: comment_id, deleted: false });
         let list = comment.ups
         let index
@@ -38,13 +38,13 @@ class CommentService extends Service {
         return await comment.save()
     }
 
-    async reply(comment_id, author_id, content) {
-        let reply = this.ctx.model.Reply()
-        reply.comment_id = comment_id
-        reply.author_id = author_id
-        reply.content = content;
-        return await reply.save()
+    async delete(id) {
+        let comment = await this.ctx.model.Comment.findOne({ _id: id, deleted: false });
+        comment.deleted = true;
+        comment.save();
+        return;
     }
+
 
 }
 module.exports = CommentService;
