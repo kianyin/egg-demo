@@ -70,17 +70,6 @@ class TopicController extends Controller {
             }
         }
     }
-
-    async delete() {
-        const { ctx } = this;
-        const { id } = ctx.params;
-        const result = await ctx.service.topic.delete(id);
-        if (result) {
-            ctx.body = {
-                status: 'ok'
-            }
-        }
-    }
 }
 
 

@@ -37,14 +37,5 @@ class CommentService extends Service {
         comment.ups = list;
         return await comment.save()
     }
-
-    async delete(id) {
-        let comment = await this.ctx.model.Comment.findOne({ _id: id, deleted: false });
-        comment.deleted = true;
-        comment.save();
-        return;
-    }
-
-
 }
 module.exports = CommentService;

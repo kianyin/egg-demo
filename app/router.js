@@ -26,8 +26,4 @@ module.exports = app => {
     router.post('/topics', jwt, controller.topic.create);
     // 修改文章 Done
     router.post('/topic/:id', jwt, controller.topic.update);
-    // 删除文章 Done
-    router.delete('/topic/:id', jwt, controller.topic.delete);
-    // 删除评论 Done
-    router.delete('/comments/:id', jwt, controller.comment.delete);
 };

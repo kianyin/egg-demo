@@ -57,11 +57,5 @@ class TopicService extends Service {
 
         return true
     }
-    async delete(id) {
-        let topic = await this.ctx.model.Topic.findOne({ _id: id, deleted: false });
-        topic.deleted = true;
-        topic.save();
-        return;
-    }
 }
 module.exports = TopicService;

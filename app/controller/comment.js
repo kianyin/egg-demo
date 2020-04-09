@@ -44,17 +44,6 @@ class CommentController extends Controller {
             }
         }
     }
-
-    async delete() {
-        const { ctx } = this;
-        const { id } = ctx.params;
-        const result = await ctx.service.comment.delete(id);
-        if (result) {
-            ctx.body = {
-                status: 'ok'
-            }
-        }
-    }
 }
 
 
