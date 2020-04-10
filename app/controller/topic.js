@@ -16,12 +16,7 @@ class TopicController extends Controller {
             sort: '-top -last_reply_at',
         };
 
-        let queryData = {}
-        if (query.title) {
-            queryData.title = query.title
-        }
-
-        const result = await ctx.service.topic.query(queryData, options);
+        const result = await ctx.service.topic.query(query, options);
         ctx.body = {
             status: 'ok',
             ...result

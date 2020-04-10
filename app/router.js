@@ -11,7 +11,7 @@ module.exports = app => {
     // 登录 Done
     router.post('/login', controller.user.signin);
     // 文章列表 Done
-    router.get('/topics', controller.topic.getList);
+    router.get('/topics', jwt, controller.topic.getList);
     // 文章详情 Done
     router.get('/topics/:id', jwt, controller.topic.detail);
     // 评论列表 Done 

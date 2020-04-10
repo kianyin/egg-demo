@@ -3,20 +3,12 @@
 const Service = require('egg').Service;
 
 class TopicService extends Service {
-    async query(query = {}, querySelector = {}) {
+    async query(query = {}, pageSelector = {}) {
         const { ctx } = this
-        const total = await ctx.model.Topic.find({ ...query, deleted: false }).count();
-        const data = await ctx.model.Topic.find({ ...query, deleted: false }, '', querySelector);
-        const data_list = [];
-        for (let i = 0; i < data.length; i++) {
-            let author = await this.service.user.getUserById(data[i].author_id)
-            data_list.push({
-                title: data[i].title,
-                reply_count: data[i].reply_count,
-                author_name: author ? author.nick_name : null,
-                id: data[i]._id
-            })
-        }
+        const querySelector = { deleted: false }
+        if (query.title) { querySelector.title = { '$regex': query.title } }
+        const total = await ctx.model.Topic.find(querySelector).count();
+        const data_list = await ctx.model.Topic.find(querySelector, '', pageSelector);
         return { total, data_list }
     }
 
